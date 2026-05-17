@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:15
+    container_name: stats_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Java_0420
+      POSTGRES_DB: statistics_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: stats_api
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Java_0420
+      POSTGRES_DB: statistics_db
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      DATABASE_URL: postgresql+asyncpg://postgres:Java_0420@db:5432/statistics_db
+      DATABASE_URL_SYNC: postgresql+psycopg2://postgres:Java_0420@db:5432/statistics_db
+      SECRET_KEY: docker-dev-secret-change-in-production
+      APP_NAME: Statistics Platform API
+      APP_VERSION: 1.0.0
+      DEBUG: "False"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
