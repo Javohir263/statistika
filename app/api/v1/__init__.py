@@ -6,6 +6,7 @@ api_router orqali main.py'ga uzatiladi.
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    admin,
     branches,
     companies,
     financial_reports,
@@ -33,3 +34,6 @@ api_router.include_router(users.router)
 
 # Statistik endpointlar
 api_router.include_router(stats.router)
+
+# Admin endpointlar (seed va boshqalar)
+api_router.include_router(admin.router)
