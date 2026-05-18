@@ -53,3 +53,6 @@ alembic/__pycache__/
 
 # Ruff cache
 .ruff_cache/
+
+statistika-key.pem
+*.pem
