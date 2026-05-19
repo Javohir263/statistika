@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
-    description="Restoran va Supermarketlar uchun statistik tahlil platformasi",
+    description="Restoran, Supermarketlar uchun statistik tahlil platformasi",
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
