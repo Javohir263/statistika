@@ -1,10 +1,11 @@
 """Statistics Platform API — kirish nuqtasi."""
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1 import api_router
+from app.api.v1.auth import get_current_user, router as auth_router
 from app.core.config import settings
 from app.db.session import engine
 
@@ -38,8 +39,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# API routerlarini ulash (/api/v1 prefix bilan)
-app.include_router(api_router, prefix="/api/v1")
+# Auth endpointlari — HIMOYALANMAYDI (login qilish uchun kerak!)
+app.include_router(auth_router, prefix="/api/v1")
+
+# Qolgan barcha endpointlar — TOKEN TALAB QILADI
+app.include_router(
+    api_router,
+    prefix="/api/v1",
+    dependencies=[Depends(get_current_user)],  # ← Bitta qator butun loyihani himoya qiladi
+)
 
 
 @app.get("/", tags=["Root"])

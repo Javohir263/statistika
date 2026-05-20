@@ -21,6 +21,7 @@ from app.api.v1 import (
 
 api_router = APIRouter()
 
+
 # CRUD routerlari
 api_router.include_router(sectors.router)
 api_router.include_router(product_categories.router)
